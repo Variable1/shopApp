@@ -1,8 +1,8 @@
-name:  nginx
+name:  工业 scada1.0
 description: |
-   nginx image
+   scada1.0 images 模板构建
 version:  1.0.0
 category:  WEB
-maintainer:  liumiaocn
+maintainer:  variable
 license:  Apache 2
-projectURL: https://github.com/ liumiaocn/rancher-cattle-autocatalog
+projectURL: https://github.com/Variable1/shopApp
