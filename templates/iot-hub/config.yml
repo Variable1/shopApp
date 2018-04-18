@@ -1,0 +1,8 @@
+name:  MJ:IOT-HUB
+description: |
+   iot p平台 模板构建
+version:  1.0.0
+category:  WEB
+maintainer:  variable
+license:  Apache 2
+projectURL: https://github.com/Variable1/shopApp
