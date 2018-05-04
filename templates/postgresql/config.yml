@@ -1,4 +1,4 @@
-name:  PostgreSQL
+name:  MPostgreSQL
 description: |
    PostgreSQL — an object-relational database (ORDBMS)
 version:  1.0.0
