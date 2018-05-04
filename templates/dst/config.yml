@@ -1,0 +1,8 @@
+name:  dst
+description: |
+   dst image
+version:  1.0.0
+category:  WEB
+maintainer:  variable
+license:  Apache 2
+projectURL: https://github.com/Variable1/shopApp
