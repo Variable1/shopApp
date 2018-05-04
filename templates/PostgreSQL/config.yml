@@ -1,6 +1,6 @@
 name:  PostgreSQL
 description: |
-   Postgre images 模板构建
+   PostgreSQL — an object-relational database (ORDBMS)
 version:  1.0.0
 category:  WEB
 maintainer:  variable
