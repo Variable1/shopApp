@@ -1,9 +1,10 @@
 version: '2'
+version: '2'
 .catalog:
-  name:  postgres
+  name:  dst
   version:  1.0.0
-  description:  postgres image
-  uuid: postgres-1
+  description:  nginx image
+  uuid: dst-1
   minimum_rancher_version: V1.0.0
   questions: #
 services:
