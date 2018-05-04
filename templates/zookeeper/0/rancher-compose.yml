@@ -1,10 +1,9 @@
 version: '2'
-version: '2'
 .catalog:
-  name:  dst
+  name:  zookeeper
   version:  1.0.0
-  description:  nginx image
-  uuid: dst-1
+  description:  zookeeper image
+  uuid: zookeeper-1
   minimum_rancher_version: V1.0.0
   questions: #
 services:

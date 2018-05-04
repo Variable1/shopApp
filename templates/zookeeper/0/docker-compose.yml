@@ -1,9 +1,7 @@
 version: '2'
 services:
   postgres:
-    image: postgres:9.4
-    environment:
-      POSTGRES_PASSWORD: fangqiang
+    image: zookeeper
     stdin_open: true
     tty: true
     ports:

@@ -1,6 +1,6 @@
-name:  MPostgreSQL
+name:  zookeeper
 description: |
-   PostgreSQL — an object-relational database (ORDBMS)
+   zookeeper
 version:  1.0.0
 category:  WEB
 maintainer:  variable
