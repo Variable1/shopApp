@@ -1,0 +1,13 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:9.4
+    environment:
+      POSTGRES_PASSWORD: fangqiang
+    stdin_open: true
+    tty: true
+    ports:
+    - 5432:5432/tcp
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: node=node4

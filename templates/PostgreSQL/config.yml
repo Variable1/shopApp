@@ -1,6 +1,6 @@
-name:  MJ:IOT-HUB
+name:  PostgreSQL
 description: |
-   iot 平台 模板构建
+   Postgre images 模板构建
 version:  1.0.0
 category:  WEB
 maintainer:  variable
