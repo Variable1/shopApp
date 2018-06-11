@@ -7,9 +7,95 @@ version: '2'
   minimum_rancher_version: V1.0.0
   questions: #
 services:
-  scada-db:
+  basics-service:
     scale: 1
     start_on_create: true
-  scada:
+  outDataGateway:
+    scale: 1
+    start_on_create: true
+  user-service:
+    scale: 1
+    start_on_create: true
+  basesdb:
+    scale: 1
+    start_on_create: true
+  inprotocol-getway:
+    scale: 1
+    start_on_create: true
+  in-modbus:
+    scale: 1
+    start_on_create: true
+  scada-lb:
+    scale: 1
+    start_on_create: true
+    lb_config:
+      certs: []
+      port_rules:
+      - priority: 1
+        protocol: http
+        service: registry0
+        source_port: 8761
+        target_port: 8761
+      - priority: 2
+        protocol: http
+        service: gateway
+        source_port: 9495
+        target_port: 4000
+      - priority: 3
+        protocol: http
+        service: user-service
+        source_port: 5000
+        target_port: 5000
+      - priority: 4
+        protocol: tcp
+        service: basesdb
+        source_port: 33066
+        target_port: 3306
+      - priority: 5
+        protocol: http
+        service: basics-service
+        source_port: 7760
+        target_port: 7760
+      - priority: 6
+        protocol: http
+        service: outDataGateway
+        source_port: 8989
+        target_port: 8989
+      - priority: 7
+        protocol: http
+        service: out-rabbitmq
+        source_port: 8999
+        target_port: 8999
+      - priority: 8
+        protocol: http
+        service: config
+        source_port: 8888
+        target_port: 8888
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 42
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  out-rabbitmq:
+    scale: 1
+    start_on_create: true
+  registry0:
+    scale: 1
+    start_on_create: true
+  registry2:
+    scale: 1
+    start_on_create: true
+  config:
+    retain_ip: true
+    scale: 1
+    start_on_create: true
+  registry1:
+    scale: 1
+    start_on_create: true
+  gateway:
     scale: 1
     start_on_create: true
