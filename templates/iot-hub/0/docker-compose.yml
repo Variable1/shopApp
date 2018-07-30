@@ -1,111 +1,115 @@
 version: '2'
 services:
-  basics-service:
-    image: 10.168.4.80/scada/scada-basics-service:10
-    links:
-    - basesdb:basesdb
-  outDataGateway:
-    image: 10.168.4.80/scada/scada-out-data-gateway:6
-    external_links:
-    - rabbitmq-3/rabbitmq:rabbitmq
-    links:
-    - config:config
-    - basesdb:basesdb
-  user-service:
-    image: 10.168.4.80/scada/scada-user-service:4
-    stdin_open: true
-    tty: true
-    links:
-    - registry0:registry
-    - config:config
-    - registry1:registry1
-    - registry2:registry2
-    labels:
-      io.rancher.container.pull_image: always
-  basesdb:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root123
-    stdin_open: true
-    volumes:
-    - /usr/data/scada-one:/var/lib/mysql
-    tty: true
-    labels:
-      io.rancher.container.pull_image: always
-      io.rancher.scheduler.affinity:host_label: node=node2
-  inprotocol-getway:
-    image: 10.168.4.80/scada/scada-inprotocol-getway:3
-    external_links:
-    - rabbitmq-3/rabbitmq:rabbitmq
-    links:
-    - config:config
-    - basesdb:basesdb
-  in-modbus:
-    image: 10.168.4.80/scada/scada-in-modbus:1
-    external_links:
-    - rabbitmq-3/rabbitmq:rabbitmq
-    links:
-    - registry1:registry1
-    - registry0:registry0
-    - registry2:registry2
-  scada-lb:
-    image: rancher/lb-service-haproxy:v0.9.1
-    ports:
-    - 8761:8761/tcp
-    - 9495:9495/tcp
-    - 5000:5000/tcp
-    - 33066:33066/tcp
-    - 7760:7760/tcp
-    - 8989:8989/tcp
-    - 8999:8999/tcp
-    - 8888:8888/tcp
-    labels:
-      io.rancher.scheduler.affinity:host_label: node=node7
-      io.rancher.container.agent.role: environmentAdmin,agent
-      io.rancher.container.agent_service.drain_provider: 'true'
-      io.rancher.container.create_agent: 'true'
-  out-rabbitmq:
-    image: 10.168.4.80/scada/scada-out-rabbitmq:1
-  registry0:
-    image: 10.168.4.80/scada/scada-registry:8
-    stdin_open: true
-    tty: true
-    links:
-    - config:config
-    labels:
-      io.rancher.scheduler.affinity:host_label: node=node1
-      io.rancher.container.pull_image: always
-  registry2:
-    image: 10.168.4.80/scada/scada-registry:8
-    stdin_open: true
-    tty: true
-    links:
-    - config:config
-    labels:
-      io.rancher.scheduler.affinity:host_label: node=node1
-      io.rancher.container.pull_image: always
-  config:
-    image: 10.168.4.80/scada/scada-config:14
+  config-service:
+    image: 10.168.4.80/iot-hub/iot-config:16
     stdin_open: true
     tty: true
     labels:
       io.rancher.scheduler.affinity:host_label: node=node4
       io.rancher.container.pull_image: always
-  registry1:
-    image: 10.168.4.80/scada/scada-registry:8
+  iot-open:
+    image: 10.168.4.80/iot-hub/iot-open:1.6
+    stdin_open: true
+    external_links:
+    - rabbitmq-3/rabbitmq:rabbitmq
+    tty: true
+    links:
+    - registry-service0:registry-service0
+    ports:
+    - 7762:7762/tcp
+    labels:
+      io.rancher.container.pull_image: always
+  basics-service:
+    image: 10.168.4.80/iot-hub/iot-basics:15
+    links:
+    - config-service:config-service
+  user-service:
+    image: 10.168.4.80/iot-hub/iot-user:13
     stdin_open: true
     tty: true
     links:
-    - config:config
+    - config-service:config-service
+    - registry-service1:registry-service1
+    - registry-service0:registry-service0
+    - registry-service2:registry-service2
+    labels:
+      io.rancher.container.pull_image: always
+  iot-lb:
+    image: rancher/lb-service-haproxy:v0.9.1
+    ports:
+    - 8761:8761/tcp
+    - 4000:4000/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: node=node7
+      io.rancher.container.agent.role: environmentAdmin,agent
+      io.rancher.container.agent_service.drain_provider: 'true'
+      io.rancher.container.create_agent: 'true'
+  basesdb:
+    image: dnhsoft/mysql-utf8:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+    stdin_open: true
+    volumes:
+    - /usr/data/iot-hub:/var/lib/mysql
+    tty: true
+    ports:
+    - 33066:3306/tcp
+    labels:
+      io.rancher.scheduler.affinity:host_label: node=node2
+      io.rancher.container.pull_image: always
+  outprotocol-gateway:
+    image: 10.168.4.80/iot-hub/iot-outprotocol:7
+    external_links:
+    - rabbitmq-3/rabbitmq:rabbitmq
+    links:
+    - config-service:config-service
+  in-modbus:
+    image: 10.168.4.80/iot-hub/iot-inmodbus:4
+    external_links:
+    - rabbitmq-3/rabbitmq:rabbitmq
+    links:
+    - config-service:config-service
+  out-rabbitmq:
+    image: 10.168.4.80/iot-hub/iot-outrabbitmq:2
+    links:
+    - config-service:config-service
+  inprotocol-gateway:
+    image: 10.168.4.80/iot-hub/iot-inprotocol:8
+    external_links:
+    - rabbitmq-3/rabbitmq:rabbitmq
+    links:
+    - iot-open:iot-open
+    - config-service:config-service
+  gateway-service:
+    image: 10.168.4.80/iot-hub/iot-gateway:10
+    links:
+    - config-service:config-service
+    - inprotocol-gateway:inprotocol-gateway
+    - user-service:user-service
+  registry-service1:
+    image: 10.168.4.80/iot-hub/iot-registry:16
+    stdin_open: true
+    tty: true
+    links:
+    - config-service:config-service
     labels:
       io.rancher.scheduler.affinity:host_label: node=node1
       io.rancher.container.pull_image: always
-  gateway:
-    image: 10.168.4.80/scada/scada-gateway:1
+  registry-service2:
+    image: 10.168.4.80/iot-hub/iot-registry:16
+    stdin_open: true
+    tty: true
     links:
-    - config:config
-    - registry1:registry1
-    - registry0:registry0
-    - registry2:registry2
-    - user-service:user-service
-
+    - config-service:config-service
+    labels:
+      io.rancher.scheduler.affinity:host_label: node=node1
+      io.rancher.container.pull_image: always
+  registry-service0:
+    image: 10.168.4.80/iot-hub/iot-registry:16
+    stdin_open: true
+    tty: true
+    links:
+    - config-service:config-service
+    labels:
+      io.rancher.scheduler.affinity:host_label: node=node1
+      io.rancher.container.pull_image: always
