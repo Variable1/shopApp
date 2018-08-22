@@ -1,6 +1,6 @@
-name:  MJ:in-mitsubishimc 1.0
+name:  MJ:imitsubishimc1.0
 description: |
-   in-mitsubishimc1.0 images 模板构建
+   mitsubishimc1.0 三菱mc协议
 version:  1.0.0
 category:  WEB
 maintainer:  variable

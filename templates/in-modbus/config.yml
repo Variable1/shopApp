@@ -1,6 +1,6 @@
-name:  MJ:in-modbus 1.0
+name:  MJ:modbus1.0
 description: |
-   in-modbus 1.0 images 模板构建
+   modbus-TCP 通讯协议
 version:  1.0.0
 category:  WEB
 maintainer:  variable
