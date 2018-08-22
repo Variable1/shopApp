@@ -1,0 +1,15 @@
+version: '2'
+.catalog:
+  name:  scada-one
+  version:  1.0.0
+  description:  nginx image
+  uuid: scada-one-1
+  minimum_rancher_version: V1.0.0
+  questions: #
+services:
+  scada-db:
+    scale: 1
+    start_on_create: true
+  scada:
+    scale: 1
+    start_on_create: true

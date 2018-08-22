@@ -1,0 +1,8 @@
+name:  MJ:in-mitsubishimc 1.0
+description: |
+   in-mitsubishimc1.0 images 模板构建
+version:  1.0.0
+category:  WEB
+maintainer:  variable
+license:  Apache 2
+projectURL: https://github.com/Variable1/shopApp
